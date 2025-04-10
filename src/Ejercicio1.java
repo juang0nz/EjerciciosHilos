@@ -1,36 +1,44 @@
-public class Ejercicio1 {
+/*Ejercicio 2: Hola Mundo
+Implemente un programa que escriba un “Hola Mundo” por cada
+hilo de ejecución que se cree (seis como mínimo) y que, además
+indique desde qué hilo se imprime.
+Luego que cada uno espere un tiempo proporcional a su identificador
+Antes de imprimir el mensaje (Thread1 un segundo, Thread2 dos segundos etc…).
+Lance los Threads mediante una clase Thread y luego mediante
+interfaz Runnable.
+¿Se observa alguna diferencia?
+
+ */
+
+ public class Ejercicio1 {
     public static void main(String[] args) {
-        new HiloCero("0").start();  // Inicia el hilo que imprime "0"
-        new HiloUno("1").start();   // Inicia el hilo que imprime "1"
-        System.out.println("main thread finished.");
+        // Crear e iniciar seis hilos
+        for (int i = 1; i <= 6; i++) {
+            new Hilo(i).start();
+        }
+        System.out.println("main thread Running...");
     }
 
-    // Creo HiloCero 
-    static class HiloCero extends Thread {
-        public HiloCero(String str) {
-            super(str); 
+    // Clase Hilo que extiende Thread
+    static class Hilo extends Thread {
+        private int id;
+
+        public Hilo(int id) {
+            this.id = id; // Asigna el identificador del hilo
         }
 
         public void run() {
-            for (int i = 0; i < 1000; i++)
-                System.out.println(i+1 + ": " + getName ());
-               // System.out.println("0"); 
-            System.out.println("Thread " + getName() + " finished.");
-        }
-    }
+            try {
+                Thread.sleep(id * 1000); // Espera 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-    
-    // Creo HiloUno
-    static class HiloUno extends Thread {
-        public HiloUno(String str) {
-            super(str);
-        }
-
-        public void run() {
-            for (int i = 0; i < 1000; i++)
-                System.out.println(i+1 + ": " + getName ());
-                //System.out.println("1"); 
-            System.out.println("Thread " + getName() + " finished.");
+            // Imprime el mensaje después de la espera
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Hilo " + id + ": Hola Mundo " + (i + 1));
+            }
+            System.out.println("Hilo " + id + " terminado.");
         }
     }
 }
